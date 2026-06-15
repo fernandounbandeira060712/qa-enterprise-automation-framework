@@ -1,22 +1,28 @@
 package br.com.fernandouchoa.qa.ui.tests;
 
-import org.junit.jupiter.api.Assertions;
+import br.com.fernandouchoa.qa.utils.TestDataManager;
 import org.junit.jupiter.api.Test;
 
+import br.com.fernandouchoa.qa.model.User;
 import br.com.fernandouchoa.qa.ui.pages.HomePage;
 
 public class AutomationExerciseHomeTest extends BaseTest {
 
-    @Test
-    public void deveAcessarHomeDoMagentoComSucesso() {
+	@Test
+	public void deveRealizarLogin() {
 
-        HomePage homePage = new HomePage(page);
+	    User validUser =
+	            TestDataManager.getUser("validUser");
 
-        homePage.open();
+	    HomePage homePage =
+	            new HomePage(page);
 
-        Assertions.assertTrue(
-                homePage.isHomePageLoaded(),
-                "Home page não foi carregada."
-        );
-    }
+	    homePage.open();
+
+	    homePage.header()
+	            .goToLoginPage()
+	            .login(validUser);
+	}
+    
+    
 }

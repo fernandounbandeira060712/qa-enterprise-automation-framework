@@ -110,6 +110,8 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+    
+    
 
     <build>
         <plugins>
@@ -134,7 +136,7 @@
     </configuration>
 </plugin>
 
-            <!-- Allure Report -->
+			<!-- Allure Report -->
             <plugin>
                 <groupId>io.qameta.allure</groupId>
                 <artifactId>allure-maven</artifactId>

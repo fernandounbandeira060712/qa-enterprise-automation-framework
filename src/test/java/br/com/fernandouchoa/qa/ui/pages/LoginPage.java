@@ -3,6 +3,8 @@ package br.com.fernandouchoa.qa.ui.pages;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 
+import br.com.fernandouchoa.qa.model.User;
+
 public class LoginPage extends BasePage {
 
     private final Locator emailField;
@@ -41,8 +43,25 @@ public class LoginPage extends BasePage {
         return this;
     }
 
-    public void clickLogin() {
+    public HomePage clickLogin() {
 
         loginButton.click();
+
+        return new HomePage(page);
+    }
+
+    public HomePage login(String email, String password) {
+
+        fillEmail(email);
+        fillPassword(password);
+
+        return clickLogin();
+    }
+
+    public HomePage login(User user) {
+
+        return login(
+                user.getEmail(),
+                user.getPassword());
     }
 }
