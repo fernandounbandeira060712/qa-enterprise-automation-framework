@@ -1,0 +1,84 @@
+package br.com.fernandouchoa.qa.core.factory;
+
+import br.com.fernandouchoa.qa.core.config.EnvironmentManager;
+import br.com.fernandouchoa.qa.core.driver.DriverManager;
+import com.microsoft.playwright.Browser;
+import com.microsoft.playwright.BrowserContext;
+import com.microsoft.playwright.BrowserType;
+import com.microsoft.playwright.Page;
+import com.microsoft.playwright.Playwright;
+
+public final class PlaywrightFactory {
+
+    private PlaywrightFactory() {
+    }
+
+    public static void createInstance() {
+
+        Playwright playwright = Playwright.create();
+
+        BrowserType.LaunchOptions options =
+                new BrowserType.LaunchOptions()
+                        .setHeadless(EnvironmentManager.isHeadless());
+
+        Browser browser = launchBrowser(playwright, options);
+
+        BrowserContext context = browser.newContext();
+        context.setDefaultTimeout(EnvironmentManager.getTimeout());
+
+        Page page = context.newPage();
+
+        DriverManager.setPlaywright(playwright);
+        DriverManager.setBrowser(browser);
+        DriverManager.setContext(context);
+        DriverManager.setPage(page);
+    }
+
+    public static Page getPage() {
+        return DriverManager.getPage();
+    }
+
+    public static void closeInstance() {
+
+        if (DriverManager.getPage() != null) {
+            DriverManager.getPage().close();
+        }
+
+        if (DriverManager.getContext() != null) {
+            DriverManager.getContext().close();
+        }
+
+        if (DriverManager.getBrowser() != null) {
+            DriverManager.getBrowser().close();
+        }
+
+        if (DriverManager.getPlaywright() != null) {
+            DriverManager.getPlaywright().close();
+        }
+
+        DriverManager.unload();
+    }
+
+    private static Browser launchBrowser(
+            Playwright playwright,
+            BrowserType.LaunchOptions options) {
+
+        String browserName = EnvironmentManager.getBrowser();
+
+        switch (browserName.toLowerCase()) {
+
+            case "firefox":
+                return playwright.firefox().launch(options);
+
+            case "webkit":
+                return playwright.webkit().launch(options);
+
+            case "chromium":
+                return playwright.chromium().launch(options);
+
+            default:
+                throw new IllegalArgumentException(
+                        "Browser não suportado: " + browserName);
+        }
+    }
+}
