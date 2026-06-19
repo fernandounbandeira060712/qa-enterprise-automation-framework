@@ -10,6 +10,7 @@ public class LoginPage extends BasePage {
     private final Locator emailField;
     private final Locator passwordField;
     private final Locator loginButton;
+    private final Locator loginErrorMessage;
 
     public LoginPage(Page page) {
 
@@ -23,6 +24,9 @@ public class LoginPage extends BasePage {
 
         this.loginButton =
                 page.locator("button[data-qa='login-button']");
+
+        this.loginErrorMessage =
+                page.locator("p:has-text('Your email or password is incorrect!')");
     }
 
     public boolean isLoginPageLoaded() {
@@ -30,38 +34,35 @@ public class LoginPage extends BasePage {
     }
 
     public LoginPage fillEmail(String email) {
-
         emailField.fill(email);
-
         return this;
     }
 
     public LoginPage fillPassword(String password) {
-
         passwordField.fill(password);
-
         return this;
     }
 
-    public HomePage clickLogin() {
-
+    public LoginPage clickLogin() {
         loginButton.click();
-
-        return new HomePage(page);
+        return this;
     }
 
-    public HomePage login(String email, String password) {
-
-        fillEmail(email);
-        fillPassword(password);
-
-        return clickLogin();
+    public LoginPage login(User user) {
+        fillEmail(user.getEmail());
+        fillPassword(user.getPassword());
+        clickLogin();
+        return this;
     }
 
-    public HomePage login(User user) {
+    public AccountPage loginSuccessfully(User user) {
+        fillEmail(user.getEmail());
+        fillPassword(user.getPassword());
+        loginButton.click();
+        return new AccountPage(page);
+    }
 
-        return login(
-                user.getEmail(),
-                user.getPassword());
+    public boolean isInvalidLoginMessageDisplayed() {
+        return loginErrorMessage.isVisible();
     }
 }
