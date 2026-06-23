@@ -2,7 +2,9 @@ package br.com.fernandouchoa.qa.ui.pages;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import com.microsoft.playwright.options.WaitUntilState;
 
+import br.com.fernandouchoa.qa.core.config.EnvironmentManager;
 import br.com.fernandouchoa.qa.ui.components.HeaderComponent;
 
 public class HomePage extends BasePage {
@@ -34,8 +36,20 @@ public class HomePage extends BasePage {
                 page.locator(".features_items");
     }
 
-    public void open() {
-        page.navigate(baseUrl);
+    public HomePage open() {
+
+        try {
+            page.navigate(
+                    EnvironmentManager.getBaseUrl(),
+                    new Page.NavigateOptions()
+                            .setTimeout(15000)
+                            .setWaitUntil(WaitUntilState.DOMCONTENTLOADED)
+            );
+        } catch (Exception exception) {
+            page.evaluate("window.stop()");
+        }
+
+        return this;
     }
 
     public HeaderComponent header() {

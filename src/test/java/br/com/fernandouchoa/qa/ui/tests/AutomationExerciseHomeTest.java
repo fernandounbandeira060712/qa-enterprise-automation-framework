@@ -3,6 +3,7 @@ package br.com.fernandouchoa.qa.ui.tests;
 import org.junit.jupiter.api.Test;
 
 import br.com.fernandouchoa.qa.model.User;
+import br.com.fernandouchoa.qa.ui.components.CartModalComponent;
 import br.com.fernandouchoa.qa.ui.pages.AccountPage;
 import br.com.fernandouchoa.qa.ui.pages.HomePage;
 import br.com.fernandouchoa.qa.ui.pages.LoginPage;
@@ -139,6 +140,25 @@ public class AutomationExerciseHomeTest extends BaseTest {
         AssertUtils.assertTrue(
                 !productDetailsPage.getProductPrice().isBlank(),
                 "Preço do produto não foi exibido."
+        );
+    }
+    
+    @Test
+    public void deveAdicionarProdutoAoCarrinho() {
+
+        HomePage homePage = new HomePage(page);
+
+        homePage.open();
+
+        CartModalComponent cartModal =
+
+                homePage.header()
+                        .goToProductsPage()
+                        .addProductToCartById("1");
+
+        AssertUtils.assertTrue(
+                cartModal.isDisplayed(),
+                "Modal de produto adicionado não foi exibido."
         );
     }
 }

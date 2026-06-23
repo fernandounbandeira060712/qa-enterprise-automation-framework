@@ -2,8 +2,10 @@ package br.com.fernandouchoa.qa.ui.pages;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import com.microsoft.playwright.options.WaitForSelectorState;
 
 import br.com.fernandouchoa.qa.core.config.EnvironmentManager;
+import br.com.fernandouchoa.qa.ui.components.CartModalComponent;
 
 public class ProductsPage extends BasePage {
 
@@ -45,9 +47,16 @@ public class ProductsPage extends BasePage {
 
         return new ProductDetailsPage(page);
     }
+    
+    public CartModalComponent addProductToCartById(String productId) {
 
-    public ProductsPage addProductToCartById(String productId) {
-        page.locator("a[data-product-id='" + productId + "']").first().click();
-        return this;
+        page.locator(".productinfo a[data-product-id='" + productId + "']")
+                .click();
+
+        page.waitForSelector("#cartModal", 
+                new Page.WaitForSelectorOptions()
+                        .setState(WaitForSelectorState.VISIBLE));
+
+        return new CartModalComponent(page);
     }
 }

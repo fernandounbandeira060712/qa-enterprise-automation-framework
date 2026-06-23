@@ -1,48 +1,48 @@
 package br.com.fernandouchoa.qa.ui.components;
 
-import com.microsoft.playwright.Locator;
-import br.com.fernandouchoa.qa.ui.pages.ProductsPage;
 import com.microsoft.playwright.Page;
+import com.microsoft.playwright.options.WaitUntilState;
 
+import br.com.fernandouchoa.qa.core.config.EnvironmentManager;
+import br.com.fernandouchoa.qa.ui.pages.CartPage;
 import br.com.fernandouchoa.qa.ui.pages.LoginPage;
+import br.com.fernandouchoa.qa.ui.pages.ProductsPage;
 
 public class HeaderComponent {
 
     private final Page page;
 
-    private final Locator signupLoginLink;
-    private final Locator productsLink;
-    private final Locator cartLink;
-
     public HeaderComponent(Page page) {
-
         this.page = page;
-
-        this.signupLoginLink = page.locator("a[href='/login']");
-        this.productsLink = page.locator("a[href='/products']");
-        this.cartLink = page.locator("a[href='/view_cart']");
     }
-    
-    public LoginPage goToLoginPage() {
 
-        signupLoginLink.click();
+    public LoginPage goToLoginPage() {
+        page.navigate(
+                EnvironmentManager.getBaseUrl() + "login",
+                new Page.NavigateOptions()
+                        .setWaitUntil(WaitUntilState.DOMCONTENTLOADED)
+        );
 
         return new LoginPage(page);
     }
 
-    public void clickProducts() {
-        productsLink.click();
-    }
-
-    public void clickCart() {
-        cartLink.click();
-    }
-    
     public ProductsPage goToProductsPage() {
-        productsLink.click();
+        page.navigate(
+                EnvironmentManager.getBaseUrl() + "products",
+                new Page.NavigateOptions()
+                        .setWaitUntil(WaitUntilState.DOMCONTENTLOADED)
+        );
 
         return new ProductsPage(page);
     }
-    
-    
+
+    public CartPage goToCartPage() {
+        page.navigate(
+                EnvironmentManager.getBaseUrl() + "view_cart",
+                new Page.NavigateOptions()
+                        .setWaitUntil(WaitUntilState.DOMCONTENTLOADED)
+        );
+
+        return new CartPage(page);
+    }
 }
