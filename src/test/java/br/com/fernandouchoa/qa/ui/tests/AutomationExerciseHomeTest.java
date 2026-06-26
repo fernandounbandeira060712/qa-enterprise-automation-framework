@@ -6,6 +6,7 @@ import br.com.fernandouchoa.qa.model.User;
 import br.com.fernandouchoa.qa.ui.components.CartModalComponent;
 import br.com.fernandouchoa.qa.ui.pages.AccountPage;
 import br.com.fernandouchoa.qa.ui.pages.CartPage;
+import br.com.fernandouchoa.qa.ui.pages.CheckoutPage;
 import br.com.fernandouchoa.qa.ui.pages.HomePage;
 import br.com.fernandouchoa.qa.ui.pages.LoginPage;
 import br.com.fernandouchoa.qa.ui.pages.ProductDetailsPage;
@@ -231,6 +232,60 @@ public class AutomationExerciseHomeTest extends BaseTest {
         AssertUtils.assertTrue(
                 cartPage.isEmpty(),
                 "Carrinho não ficou vazio após remover o produto."
+        );
+    }
+    
+    @Test
+    public void deveAcessarCheckoutComProdutoNoCarrinho() {
+
+        HomePage homePage = new HomePage(page);
+
+        homePage.open();
+
+        User validUser =
+                TestDataManager.getUser("validUser");
+
+        homePage.header()
+                .goToLoginPage()
+                .loginSuccessfully(validUser);
+
+        CheckoutPage checkoutPage =
+                homePage.header()
+                        .goToProductsPage()
+                        .addProductToCartById("1")
+                        .viewCart()
+                        .proceedToCheckout();
+
+        AssertUtils.assertTrue(
+                checkoutPage.isLoaded(),
+                "Página de checkout não foi carregada."
+        );
+    }
+    
+    @Test
+    public void deveExibirProdutoNaRevisaoDoCheckout() {
+
+        HomePage homePage = new HomePage(page);
+
+        homePage.open();
+
+        User validUser =
+                TestDataManager.getUser("validUser");
+
+        homePage.header()
+                .goToLoginPage()
+                .loginSuccessfully(validUser);
+
+        CheckoutPage checkoutPage =
+                homePage.header()
+                        .goToProductsPage()
+                        .addProductToCartById("1")
+                        .viewCart()
+                        .proceedToCheckout();
+
+        AssertUtils.assertTrue(
+                checkoutPage.hasOrderItems(),
+                "Produto não foi exibido na revisão do pedido."
         );
     }
 }

@@ -8,13 +8,19 @@ public class CartPage extends BasePage {
     private final Locator cartTable;
     private final Locator cartItems;
     private final Locator deleteButtons;
+    private final Locator proceedToCheckoutButton;
 
     public CartPage(Page page) {
         super(page);
 
-        this.cartTable = page.locator("#cart_info");
-        this.cartItems = page.locator("#cart_info_table tbody tr");
-        this.deleteButtons = page.locator(".cart_quantity_delete");
+        this.cartTable = 
+        		page.locator("#cart_info");
+        this.cartItems = 
+        		page.locator("#cart_info_table tbody tr");
+        this.deleteButtons = 
+        		page.locator(".cart_quantity_delete");
+        this.proceedToCheckoutButton =
+                page.locator(".check_out");
     }
 
     public boolean isLoaded() {
@@ -33,5 +39,12 @@ public class CartPage extends BasePage {
 
     public boolean isEmpty() {
         return cartItems.count() == 0;
+    }
+    
+    public CheckoutPage proceedToCheckout() {
+
+        proceedToCheckoutButton.click();
+
+        return new CheckoutPage(page);
     }
 }
