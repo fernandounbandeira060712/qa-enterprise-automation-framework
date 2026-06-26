@@ -5,11 +5,13 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.WaitUntilState;
 
 import br.com.fernandouchoa.qa.core.config.EnvironmentManager;
+import io.qameta.allure.Step;
 
 public class AccountPage extends BasePage {
 
     private final Locator loggedUser;
 
+    
     public AccountPage(Page page) {
         super(page);
 
@@ -17,10 +19,12 @@ public class AccountPage extends BasePage {
                 page.locator("a:has-text('Logged in as')");
     }
 
+    @Step("Validar se usuário está logado")
     public boolean isLoaded() {
         return loggedUser.isVisible();
     }
 
+    @Step("Realizar logout do usuário")
     public LoginPage logout() {
 
         page.navigate(

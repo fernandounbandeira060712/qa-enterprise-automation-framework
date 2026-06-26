@@ -3,6 +3,8 @@ package br.com.fernandouchoa.qa.ui.pages;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 
+import io.qameta.allure.Step;
+
 public class CheckoutPage extends BasePage {
 
     private final Locator addressDetails;
@@ -22,11 +24,14 @@ public class CheckoutPage extends BasePage {
                 page.locator("#cart_info tbody tr");
     }
 
+    @Step("Validar se a página de checkout foi carregada")
     public boolean isLoaded() {
         return page.url().contains("/checkout")
+                && addressDetails.isVisible()
                 && reviewOrder.isVisible();
     }
 
+    @Step("Validar se existem produtos na revisão do pedido")
     public boolean hasOrderItems() {
         return orderItems.count() > 0;
     }

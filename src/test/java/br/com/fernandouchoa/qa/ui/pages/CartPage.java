@@ -3,6 +3,8 @@ package br.com.fernandouchoa.qa.ui.pages;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 
+import io.qameta.allure.Step;
+
 public class CartPage extends BasePage {
 
     private final Locator cartTable;
@@ -13,34 +15,42 @@ public class CartPage extends BasePage {
     public CartPage(Page page) {
         super(page);
 
-        this.cartTable = 
-        		page.locator("#cart_info");
-        this.cartItems = 
-        		page.locator("#cart_info_table tbody tr");
-        this.deleteButtons = 
-        		page.locator(".cart_quantity_delete");
+        this.cartTable =
+                page.locator("#cart_info");
+
+        this.cartItems =
+                page.locator("#cart_info_table tbody tr");
+
+        this.deleteButtons =
+                page.locator(".cart_quantity_delete");
+
         this.proceedToCheckoutButton =
                 page.locator(".check_out");
     }
 
+    @Step("Validar se a página do carrinho foi carregada")
     public boolean isLoaded() {
         return cartTable.isVisible();
     }
 
+    @Step("Validar se existem produtos no carrinho")
     public boolean hasProducts() {
         return cartItems.count() > 0;
     }
 
+    @Step("Remover o primeiro produto do carrinho")
     public CartPage removeFirstProduct() {
         deleteButtons.first().click();
         page.waitForTimeout(1000);
         return this;
     }
 
+    @Step("Validar se o carrinho está vazio")
     public boolean isEmpty() {
         return cartItems.count() == 0;
     }
-    
+
+    @Step("Prosseguir para o checkout")
     public CheckoutPage proceedToCheckout() {
 
         proceedToCheckoutButton.click();

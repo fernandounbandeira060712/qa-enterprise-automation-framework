@@ -10,8 +10,6 @@ public abstract class BasePage {
 
     protected final Page page;
     protected final String baseUrl;
-    
-    
 
     protected BasePage(Page page) {
         this.page = page;

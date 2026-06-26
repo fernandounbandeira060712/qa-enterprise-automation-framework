@@ -4,6 +4,8 @@ import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 
 import br.com.fernandouchoa.qa.model.User;
+import io.qameta.allure.Allure;
+import io.qameta.allure.Step;
 
 public class LoginPage extends BasePage {
 
@@ -29,39 +31,54 @@ public class LoginPage extends BasePage {
                 page.locator("p:has-text('Your email or password is incorrect!')");
     }
 
+    @Step("Validar se página de Login foi carregada")
     public boolean isLoginPageLoaded() {
         return page.url().contains("/login");
     }
 
+    @Step("Preencher email do usuário")
     public LoginPage fillEmail(String email) {
         emailField.fill(email);
         return this;
     }
 
+    @Step("Preencher senha do usuário")
     public LoginPage fillPassword(String password) {
         passwordField.fill(password);
         return this;
     }
 
+    @Step("Clicar no botão Login")
     public LoginPage clickLogin() {
         loginButton.click();
         return this;
     }
 
+    @Step("Realizar tentativa de login com usuário inválido")
     public LoginPage login(User user) {
-        fillEmail(user.getEmail());
-        fillPassword(user.getPassword());
-        clickLogin();
+
+        Allure.parameter("Email utilizado", user.getEmail());
+
+        emailField.fill(user.getEmail());
+        passwordField.fill(user.getPassword());
+        loginButton.click();
+
         return this;
     }
 
+    @Step("Realizar login com usuário válido")
     public AccountPage loginSuccessfully(User user) {
-        fillEmail(user.getEmail());
-        fillPassword(user.getPassword());
+
+        Allure.parameter("Email utilizado", user.getEmail());
+
+        emailField.fill(user.getEmail());
+        passwordField.fill(user.getPassword());
         loginButton.click();
+
         return new AccountPage(page);
     }
 
+    @Step("Validar mensagem de login inválido")
     public boolean isInvalidLoginMessageDisplayed() {
         return loginErrorMessage.isVisible();
     }

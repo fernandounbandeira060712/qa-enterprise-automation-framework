@@ -6,6 +6,7 @@ import com.microsoft.playwright.options.WaitUntilState;
 
 import br.com.fernandouchoa.qa.core.config.EnvironmentManager;
 import br.com.fernandouchoa.qa.ui.components.HeaderComponent;
+import io.qameta.allure.Step;
 
 public class HomePage extends BasePage {
 
@@ -36,6 +37,7 @@ public class HomePage extends BasePage {
                 page.locator(".features_items");
     }
 
+    @Step("Acessar a Home Page")
     public HomePage open() {
 
         try {
@@ -52,10 +54,12 @@ public class HomePage extends BasePage {
         return this;
     }
 
+    @Step("Acessar componente Header")
     public HeaderComponent header() {
         return header;
     }
 
+    @Step("Validar se a Home Page foi carregada")
     public boolean isLoaded() {
 
         return slider.isVisible()
