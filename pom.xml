@@ -171,11 +171,15 @@
             </plugin>
 
             <!-- Allure -->
-            <plugin>
-                <groupId>io.qameta.allure</groupId>
-                <artifactId>allure-maven</artifactId>
-                <version>2.15.2</version>
-            </plugin>
+<plugin>
+    <groupId>io.qameta.allure</groupId>
+    <artifactId>allure-maven</artifactId>
+    <version>2.15.2</version>
+    <configuration>
+        <resultsDirectory>${project.build.directory}/allure-results</resultsDirectory>
+        <reportDirectory>${project.build.directory}/allure-report</reportDirectory>
+    </configuration>
+</plugin>
 
         </plugins>
     </build>
