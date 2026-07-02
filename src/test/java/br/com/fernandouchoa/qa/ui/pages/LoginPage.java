@@ -4,6 +4,7 @@ import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 
 import br.com.fernandouchoa.qa.model.User;
+import br.com.fernandouchoa.qa.ui.locators.LoginLocators;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Step;
 
@@ -18,16 +19,16 @@ public class LoginPage extends BasePage {
         super(page);
 
         this.emailField =
-                page.locator("input[data-qa='login-email']");
+                page.locator(LoginLocators.EMAIL_FIELD);
 
         this.passwordField =
-                page.locator("input[data-qa='login-password']");
+                page.locator(LoginLocators.PASSWORD_FIELD);
 
         this.loginButton =
-                page.locator("button[data-qa='login-button']");
+                page.locator(LoginLocators.LOGIN_BUTTON);
 
         this.loginErrorMessage =
-                page.locator("p:has-text('Your email or password is incorrect!')");
+                page.locator(LoginLocators.LOGIN_ERROR_MESSAGE);
     }
 
     @Step("Validar se página de Login foi carregada")

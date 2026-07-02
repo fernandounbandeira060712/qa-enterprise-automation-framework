@@ -6,6 +6,7 @@ import com.microsoft.playwright.options.WaitForSelectorState;
 
 import br.com.fernandouchoa.qa.core.config.EnvironmentManager;
 import br.com.fernandouchoa.qa.ui.components.CartModalComponent;
+import br.com.fernandouchoa.qa.ui.locators.ProductsLocators;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Step;
 
@@ -20,16 +21,16 @@ public class ProductsPage extends BasePage {
         super(page);
 
         this.productsSection =
-                page.locator(".features_items");
+                page.locator(ProductsLocators.PRODUCTS_SECTION);
 
         this.searchInput =
-                page.locator("#search_product");
+                page.locator(ProductsLocators.SEARCH_INPUT);
 
         this.searchButton =
-                page.locator("#submit_search");
+                page.locator(ProductsLocators.SEARCH_BUTTON);
 
         this.productCards =
-                page.locator(".product-image-wrapper");
+                page.locator(ProductsLocators.PRODUCT_CARDS);
     }
 
     @Step("Validar se a página de produtos foi carregada")
@@ -44,7 +45,7 @@ public class ProductsPage extends BasePage {
         fill(searchInput, productName);
         click(searchButton);
 
-        page.waitForSelector(".product-image-wrapper");
+        page.waitForSelector(ProductsLocators.PRODUCT_CARDS);
 
         return this;
     }
@@ -63,7 +64,9 @@ public class ProductsPage extends BasePage {
     public ProductDetailsPage viewProductById(String productId) {
         Allure.parameter("ID do produto", productId);
 
-        page.navigate(EnvironmentManager.getBaseUrl() + "product_details/" + productId);
+        page.navigate(
+                EnvironmentManager.getBaseUrl()
+                        + ProductsLocators.productDetailsUrl(productId));
 
         return new ProductDetailsPage(page);
     }
@@ -73,11 +76,12 @@ public class ProductsPage extends BasePage {
         Allure.parameter("ID do produto", productId);
 
         Locator addToCartButton =
-                page.locator(".productinfo a[data-product-id='" + productId + "']");
+                page.locator(ProductsLocators.addToCartButtonByProductId(productId));
 
         click(addToCartButton);
 
-        page.waitForSelector("#cartModal",
+        page.waitForSelector(
+                ProductsLocators.CART_MODAL,
                 new Page.WaitForSelectorOptions()
                         .setState(WaitForSelectorState.VISIBLE));
 
