@@ -24,14 +24,14 @@ jobs:
           java-version: 17
           cache: maven
 
-      - name: Static Code Analysis - PMD
-        run: mvn pmd:check
-
       - name: Install Playwright Browsers
         run: mvn exec:java -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args="install --with-deps"
 
       - name: Execute UI Tests
         run: mvn clean test
+
+      - name: Static Code Analysis - PMD
+        run: mvn pmd:check
 
       - name: Upload Allure Results
         if: always()
