@@ -7,6 +7,8 @@ import br.com.fernandouchoa.qa.core.config.EnvironmentManager;
 import br.com.fernandouchoa.qa.ui.pages.CartPage;
 import br.com.fernandouchoa.qa.ui.pages.LoginPage;
 import br.com.fernandouchoa.qa.ui.pages.ProductsPage;
+import br.com.fernandouchoa.qa.utils.WaitUtils;
+import io.qameta.allure.Step;
 
 public class HeaderComponent {
 
@@ -16,6 +18,7 @@ public class HeaderComponent {
         this.page = page;
     }
 
+    @Step("Acessar página de Login")
     public LoginPage goToLoginPage() {
         page.navigate(
                 EnvironmentManager.getBaseUrl() + "login",
@@ -23,9 +26,12 @@ public class HeaderComponent {
                         .setWaitUntil(WaitUntilState.DOMCONTENTLOADED)
         );
 
+        WaitUtils.waitForPageLoad(page);
+
         return new LoginPage(page);
     }
 
+    @Step("Acessar página de Produtos")
     public ProductsPage goToProductsPage() {
         page.navigate(
                 EnvironmentManager.getBaseUrl() + "products",
@@ -33,15 +39,20 @@ public class HeaderComponent {
                         .setWaitUntil(WaitUntilState.DOMCONTENTLOADED)
         );
 
+        WaitUtils.waitForPageLoad(page);
+
         return new ProductsPage(page);
     }
 
+    @Step("Acessar página do Carrinho")
     public CartPage goToCartPage() {
         page.navigate(
                 EnvironmentManager.getBaseUrl() + "view_cart",
                 new Page.NavigateOptions()
                         .setWaitUntil(WaitUntilState.DOMCONTENTLOADED)
         );
+
+        WaitUtils.waitForPageLoad(page);
 
         return new CartPage(page);
     }
